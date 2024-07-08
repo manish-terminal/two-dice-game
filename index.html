@@ -105,23 +105,34 @@
                 transform: rotate(720deg) scale(1);
             }
         }
-        .player img {
+        .dice-roll {
             animation: diceAnimation 0.5s ease-in-out;
         }
-
+        /* CSS Animation for result text */
+        @keyframes resultAnimation {
+            0% {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        #Result {
+            font-size: 1.5rem;
+            margin-top: 20px;
+            animation: resultAnimation 0.5s ease forwards;
+        }
     </style>
 </head>
 
 <body>
 
     <div class="navbar">
-        
         <a href="#">Home</a>
         <a href="#">Rules</a>
         <a href="#">Contact</a>
-        <!-- <a id="darkmode" href=""><span id="darkbtn"class="material-symbols-outlined">
-            dark_mode
-            </span></a> -->
     </div>
 
     <div class="container">
@@ -141,19 +152,22 @@
     </div>
     
     <script>
-        document.getElementById("btn").addEventListener('click', randomint);
+        document.getElementById("btn").addEventListener('click', function() {
+            // Generate random numbers
+            var n1 = Math.floor(Math.random() * 6) + 1;
+            var n2 = Math.floor(Math.random() * 6) + 1;
 
-        function randomint() {
-            var n1, n2;
-            n1 = Math.floor(Math.random() * 6) + 1;
-            var imname1 = "dice"+n1 + ".png";
+            // Update dice images with new dice faces
+            var imname1 = "dice" + n1 + ".png";
+            var imname2 = "dice" + n2 + ".png";
             document.getElementById("image1").setAttribute("src", imname1);
-
-            n2 = Math.floor(Math.random() * 6) + 1;
-            var imname2 = "dice"+n2 + ".png";
             document.getElementById("image2").setAttribute("src", imname2);
 
-            console.log(n1 + "  " + n2);
+            // Add animation class to dice images to trigger animation
+            document.getElementById("image1").classList.add("dice-roll");
+            document.getElementById("image2").classList.add("dice-roll");
+
+            // Determine and display result
             if (n1 > n2) {
                 document.getElementById("Result").innerHTML = "Player 1 Wins!";
             } else if (n1 === n2) {
@@ -161,13 +175,13 @@
             } else {
                 document.getElementById("Result").innerHTML = "Player 2 Wins!";
             }
-        }
-        // o=document.getElementById("darkbtn")
-        // o.addEventListener('click',modechange)
 
-        // function modechange(){
-        //     document.getElementById("darkbtn").innerHTML=(<span id="darkbtn"class="material-symbols-outlined">light_mode</span>)
-        // }
+            // Remove animation class after animation completes
+            setTimeout(function() {
+                document.getElementById("image1").classList.remove("dice-roll");
+                document.getElementById("image2").classList.remove("dice-roll");
+            }, 500); // Duration of animation in milliseconds
+        });
     </script>
 </body>
 </html>
